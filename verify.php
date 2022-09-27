@@ -3,7 +3,7 @@ include 'phpqrcode/qrlib.php';
 require('config.php');
 session_start();
 //db connection
-
+$conn = mysqli_connect($host, $username, $password, $dbname);
 
 require('razorpay-php/Razorpay.php');
 use Razorpay\Api\Api;
@@ -49,18 +49,10 @@ if ($success === true)
     // if(mysqli_query($conn, $sql)){
     //     echo "payment details inserted to db";
     // }
-    //     $sql = "INSERT INTO `orders` (`order_id`, `razorpay_payment_id`, `Name`, `mobile`, `gender`, `email`) VALUES ('$razorpay_order_id', '$razorpay_payment_id', '$name','$mobile','$gender','$email')";
-    // if(mysqli_query($conn,null, $sql)){
-    //     echo "payment details inserted to db";
-    // }
-
-    if ($stmt = mysqli_prepare($conn, "INSERT INTO `orders` (`order_id`, `razorpay_payment_id`, `Name`, `mobile`, `gender`, `email`) VALUES(?, ?, ?, ?, ?, ?)"))
-{
-    mysqli_stmt_bind_param($stmt, 'ssd', $razorpay_order_id, $razorpay_payment_id, $name,$mobile,$gender,$email);
-    mysqli_stmt_execute($stmt);
-    printf("Insert: Affected %d rows\n", mysqli_stmt_affected_rows($stmt));
-    mysqli_stmt_close($stmt);
-}
+        $sql = "INSERT INTO `test` (`order_id`, `razorpay_payment_id`, `Name`, `mobile`, `gender`, `email`) VALUES ('$razorpay_order_id', '$razorpay_payment_id', '$name','$mobile','$gender','$email')";
+    if(mysqli_query($conn, $sql)){
+        echo "payment details inserted to db";
+    }
 
     $html = "<p>Your payment was successful</p>
              <p>Payment ID: {$_POST['razorpay_payment_id']}</p>";
